@@ -59,10 +59,32 @@ def get_valid_password_count(passwords):
     
     return count
 
+
+# Second Solutions
+def get_index_based_validity(passwords):
+    count = 0
+    for password in passwords:
+        numbers = get_range_from_input(password)
+        key = get_password_key(password)
+        actual_password = get_password(password)
+        first = numbers[0] - 1
+        second = numbers[1] - 1
+
+        if actual_password[first] == key and actual_password[second] != key:
+            count += 1
+        if actual_password[first] != key and actual_password[second] == key:
+            count += 1
+        
+    return count
+
+
 def main():
     list_of_input = parse_file()
     number_of_vaild_passwords = get_valid_password_count(list_of_input)
-    print(f"There are {number_of_vaild_passwords}")
+    print(f"There are {number_of_vaild_passwords} satisfying the first condition")
+    
+    number_of_index_based_passwords = get_index_based_validity(list_of_input)
+    print(f"There are {number_of_index_based_passwords} satisfying the second condition")
 
 
 if __name__ == "__main__":
