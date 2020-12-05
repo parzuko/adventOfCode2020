@@ -36,13 +36,22 @@ def find_mid(low, high):
 
 def find_max_seat(raw_data):
     highest_id = float('-inf')
+    seats = []
     for boarding_pass in raw_data:
         col = find_col(boarding_pass)
         row = find_row(boarding_pass)
         seat_id = find_id(col, row)
         highest_id = max(highest_id, seat_id)
-    return highest_id
+        seats.append(seat_id)
+    return (highest_id, seats)
 
+def find_santas_seat(seats):
+    seats.sort()
+    all_possible_seats = [seat for seat in range(seats[0], seats[-1])]
+    
+    for seat in all_possible_seats:
+        if seat not in seats:
+            return seat 
 
 
 def get_data():
@@ -52,9 +61,11 @@ def get_data():
 
 def main():
     data = get_data()
-    highest = find_max_seat(data)
-    print(f"{highest} is the max seat id")
-
-
+    seat_data = find_max_seat(data)
+    max_seat = seat_data[0]
+    seats = seat_data[1]
+    print(f"{max_seat} is the max seat id")
+    santas_seat = find_santas_seat(seats)
+    print(f"Santas missing seat is: {santas_seat}")
 if __name__ == "__main__":
     main()
