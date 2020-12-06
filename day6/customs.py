@@ -1,31 +1,18 @@
-from collections import Counter
-
-def get_input():
+def get_data():
     with open("input.txt", "r+") as file:
-        data = file.read().split("\n")
-        return data
+        data = file.read().strip().split("\n\n")
+    return data
 
-def total_answered(group):
-    distinct_elements = Counter(group)
-    return len(distinct_elements)
-
-def get_sum_of_counts(raw_data):
-    total_count = 0
-    group_data = ""
-    i = 0
-    for data in raw_data:
-        if data != "":
-            group_data += data
-        if data == "" or i == len(raw_data) -1:
-            total_count += total_answered(group_data)
-            group_data = ""
-        i += 1 
-    return total_count
+def get_distinct_answers(raw_data):
+    groups = [set(each.replace("\n", "")) for each in raw_data]
+    total = sum([len(group) for group in groups])
+    return total
 
 def main():
-    raw_data = get_input()
-    answers = get_sum_of_counts(raw_data)
-    print(f"There are {answers} distinct answers")
+    raw_data = get_data()
+    part_one = get_distinct_answers(raw_data)
+    print(f"The first answer is: {part_one}")
+
 
 if __name__ == "__main__":
     main()
