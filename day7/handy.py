@@ -1,4 +1,4 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 
 colors1 = defaultdict(list)
 colors2 = defaultdict(list)
@@ -31,11 +31,11 @@ def main():
 
 def first_part(parent_color):
     final = []
-    temp = deque([parent_color])
+    temp = [parent_color]
     while len(temp) > 0:
         for each in filter(lambda y: y == temp[-1], colors1.keys()):
             for color in filter(lambda x: x[1] not in final and x[1] not in temp, colors1[each]):
-                temp.appendleft(color[1])
+                temp.insert(0, color[1])
         final.append(temp.pop())
     return len(final) - 1
 
