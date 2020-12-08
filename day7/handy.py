@@ -26,6 +26,8 @@ def main():
     populate_hashmap(data)
     part_one = first_part("shiny gold")
     print(f"the answer is {part_one}")
+    part_two = second_part("shiny gold")
+    print(f"the second answer is {part_two} ")
 
 def first_part(parent_color):
     final = []
@@ -36,6 +38,15 @@ def first_part(parent_color):
                 temp.appendleft(color[1])
         final.append(temp.pop())
     return len(final) - 1
+
+
+def second_part(parent_color):
+    if colors2[parent_color] is None:
+        return 0
+    total = 0
+    for number, color in colors2[parent_color]:
+        total += number + (number * second_part(color))
+    return total
 
 
 if __name__ == "__main__":
