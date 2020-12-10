@@ -1,42 +1,63 @@
-from collections import defaultdict
-#accumulator = 5
-operations = []
 def get_input():
-    with open("input.txt", "r+") as file:
-        raw_data = file.readlines()
-        return raw_data
-
-def split_input(raw_data):
-    for each in raw_data:
-        each = each.strip()
-        operation, number = each.split(" ")
-        operations.append([operation, number])
-
-def get_value_of_accumulator(list_of_operations):
+    with open("input.txt", "r") as file:
+        operations = file.readlines()
+        operations = [line.rstrip() for line in operations]
+        return operations
+        
+def get_accumulator(operations):
+    accmumulator = 0
     seen = set()
-    accumulator = 0
-    iterator = 0
-    while True:
-        if iterator >= len(list_of_operations):
-            return accumulator
-        operation = list_of_operations[iterator][0]
-        number = int(list_of_operations[iterator][1])
-        if iterator in seen:
-            return accumulator
-        seen.add(iterator)
+    iterator  = 0
+    status = True
+    while True: 
+
+        # no loops
+        if len(operations) - 1 == iterator :
+            status = False
+
+        if iterator  in seen:
+            status = False
+            return accmumulator, status
+
+        operation, acc = operations[iterator ].split(" ")
+        acc = int(acc)
+        seen.add(iterator )
+
         if operation == "nop":
-            iterator += 1
+            iterator  += 1
         if operation == "acc":
-            accumulator += number
-            iterator += 1
+            accmumulator += acc
+            iterator  += 1 
         if operation == "jmp":
-            iterator += number
+            iterator += acc
+        if status == False:
+            return accmumulator, True 
+    return accmumulator, False
+
+def switch_operations(lines):
+    iterator = 0
+    new_operations = lines.copy()
+    for iterator in range(len(new_operations)):   
+        operation, acc = lines[iterator].split(" ")
+        acc = int(acc)
+
+        if operation == "nop":
+            operation = "jmp"
+        elif operation == "jmp":
+            operation = "nop"
+        new_operations = lines.copy()
+        new_operations[iterator] = " ".join((operation, str(acc)))
+        acc, valid = get_accumulator(new_operations)
+        if valid:
+            return acc
+
+
 def main():
-    raw_data = get_input()
-    split_input(raw_data)
-    #print(operations[0:10])
-    accumulator = get_value_of_accumulator(operations)
-    print(accumulator)
+    operations = get_input()
+    accumulator = get_accumulator(operations)[0]
+    print(f"The first answer is : {accumulator}")
+    accumulator = switch_operations(operations)
+    print(f"The second answer is : {accumulator}")
 
 if __name__ == "__main__":
     main()
