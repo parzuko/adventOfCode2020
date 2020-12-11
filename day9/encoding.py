@@ -19,12 +19,21 @@ def find_exception(data, preamble):
         
         iterator += 1
 
+def sum_of_2(numbers, preamble):
+    exception = find_exception(numbers, preamble)
+    for i in range(len(numbers)):
+        for j in range(i + 2, len(numbers)):
+            contiguous_set = numbers[i:j]
+            if sum(contiguous_set) == exception:
+                return (min(contiguous_set) + max(contiguous_set))
 
 def main():
     data = get_input()
     PREAMBLE = 25
-    exception = find_exception(data,PREAMBLE)
+    exception = find_exception(data, PREAMBLE)
     print(f"{exception} is the first number breaking the preamble")
+    sum_of_numbers = sum_of_2(data, PREAMBLE)
+    print(f"{sum_of_numbers} is the sum of the 2 numbers")
     
 if __name__ == "__main__":
     main()
